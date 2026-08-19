@@ -2,6 +2,12 @@ import json
 import os
 import gradio as gr
 import anthropic
+from dotenv import load_dotenv
+
+# Must run before anything below reads the environment — the client and
+# DOMAINS_KRED_API_KEY are both resolved at import time. Real environment
+# variables take precedence over .env, so an exported key still wins.
+load_dotenv()
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
 
@@ -138,8 +144,8 @@ with gr.Blocks(title="Domains.Kred Agent Demo") as demo:
         "# Domains.Kred — MCP Agent Demo\n"
         "Ask about domain registration, DNS/ENS, or AI-agent identity (AID / ANS / MCP-I / DNSid) "
         "and watch Claude call the real Domains.Kred MCP server.\n\n"
-        "**Note:** registration, renewal, transfer, deletion, DNS edits, and credit top-ups spend "
-        "real credits or money and are hard to reverse. The assistant is instructed to confirm "
+        "**Note:** registration, renewal, and credit top-ups spend real credits or money and are hard to reverse."
+        "Transfer, deletion, DNS edits are permanaent changes and hard to reverse. The assistant is instructed to confirm "
         "before doing any of those — treat that as a demo safeguard, not a guarantee."
     )
     with gr.Row():
