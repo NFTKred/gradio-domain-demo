@@ -1,10 +1,11 @@
+# coding=utf-8
 import json
 import os
 import gradio as gr
 import anthropic
 from dotenv import load_dotenv
 
-# Must run before anything below reads the environment — the client and
+# Must run before anything below reads the environment; the client and
 # DOMAINS_KRED_API_KEY are both resolved at import time. Real environment
 # variables take precedence over .env, so an exported key still wins.
 load_dotenv()
@@ -18,7 +19,7 @@ MCP_SERVER_NAME = "domains-kred"
 # `permissions` field) rather than a full-access key.
 DOMAINS_KRED_API_KEY = os.environ.get("DOMAINS_KRED_API_KEY")
 
-# Purely informational — MCP tool calls execute server-side before the
+# Purely informational MCP tool calls execute server-side before the
 # response reaches this code, so this cannot block anything. It only flags
 # what already happened, for the human watching the demo.
 RISKY_KEYWORDS = ("register", "renew", "transfer", "delete", "revoke",
@@ -36,10 +37,10 @@ You can: check domain availability/price/status, manage DNS zones and records, \
 resolve and manage ENS names, provision or inspect an AI agent's identity records \
 on a domain (AID/ANS/MCP-I/DNSid), and look up entries in the public transparency log.
 
-Any action that spends credits, spends money, or changes a real record — \
+Any action that spends credits, spends money, or changes a real record; \
 registering, renewing, transferring, or deleting a domain; minting a token; \
 creating or revoking API keys or agent credentials; modifying DNS; topping up \
-credits — is irreversible or costs real money. Before calling any tool that does \
+credits - is irreversible or costs real money. Before calling any tool that does \
 one of these, state plainly what you're about to do and its cost/impact, and wait \
 for the user to explicitly confirm in their next message. Never take that action \
 on an ambiguous or implied request. Read-only lookups (availability, price, \
@@ -55,7 +56,7 @@ def call_claude_with_mcp(messages):
     kwargs = dict(
         model="claude-opus-5",
         # Thinking is on by default on Opus 5, and max_tokens caps thinking plus
-        # response text together — too tight a budget truncates the visible answer.
+        # response text together  too tight a budget truncates the visible answer.
         max_tokens=16000,
         betas=["mcp-client-2025-11-20"],
         system=SYSTEM_PROMPT,
@@ -120,14 +121,14 @@ def respond(user_message, chat_history):
         reply_text = (reply_text + "\n\n" + _refusal_notice(response)).strip()
     elif response.stop_reason == "pause_turn":
         reply_text = (reply_text + "\n\n_(Still paused after %d server-side "
-                      "continuations — stopped here.)_" % MAX_PAUSE_CONTINUATIONS).strip()
+                      "continuations - stopped here.)_" % MAX_PAUSE_CONTINUATIONS).strip()
 
     chat_history = chat_history + [
         {"role": "user", "content": user_message},
         {"role": "assistant", "content": reply_text},
     ]
 
-    banner = "⚠️  A tool call this turn looked state-changing or costly — check it below.\n\n" \
+    banner = "⚠️  A tool call this turn looked state-changing or costly - check it below.\n\n" \
         if any(t.get("risky") for t in tool_calls) else ""
     tool_panel = banner + (json.dumps(tool_calls, indent=2) if tool_calls else "No MCP tools were called for this turn.")
     return chat_history, tool_panel, ""
@@ -141,12 +142,12 @@ EXAMPLE_QUERIES = [
 
 with gr.Blocks(title="Domains.Kred Agent Demo") as demo:
     gr.Markdown(
-        "# Domains.Kred — MCP Agent Demo\n"
+        "# Domains.Kred - MCP Agent Demo\n"
         "Ask about domain registration, DNS/ENS, or AI-agent identity (AID / ANS / MCP-I / DNSid) "
         "and watch Claude call the real Domains.Kred MCP server.\n\n"
         "**Note:** registration, renewal, and credit top-ups spend real credits or money and are hard to reverse."
         "Transfer, deletion, DNS edits are permanaent changes and hard to reverse. The assistant is instructed to confirm "
-        "before doing any of those — treat that as a demo safeguard, not a guarantee."
+        "before doing any of those - treat that as a demo safeguard, not a guarantee."
     )
     with gr.Row():
         with gr.Column(scale=2):
