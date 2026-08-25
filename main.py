@@ -134,7 +134,7 @@ def respond(user_message, chat_history):
     return chat_history, tool_panel, ""
 
 EXAMPLE_QUERIES = [
-    "Is agentkred.xyz available, and what would 2 years of registration cost?",
+    "Is agentkred.kred available, and what would 2 years of registration cost?",
     "Show me the DNS records for kred.domains.",
     "Does kred.domains have an AID or ANS agent-identity record published?",
     "What's the current signed tree head on the transparency log?",

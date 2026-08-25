@@ -17,7 +17,7 @@ Built as part of the **NFT.NYC vibesprint series, running August–September 202
 Example prompts are wired into the UI:
 
 ```
-Is agentkred.xyz available, and what would 2 years of registration cost?
+Is agentkred.kred available, and what would 2 years of registration cost?
 Show me the DNS records for kred.domains.
 Does kred.domains have an AID or ANS agent-identity record published?
 What's the current signed tree head on the transparency log?
